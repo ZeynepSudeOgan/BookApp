@@ -7,12 +7,10 @@ import 'package:db_project/pages/search.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
-   const FirstPage({super.key});
+  const FirstPage({super.key});
 
   @override
-  //State<FirstPage> createState() => _FirstPageState();
-  // ignore: library_private_types_in_public_api
-  _FirstPageState createState() => _FirstPageState();
+  State<FirstPage> createState() => _FirstPageState();
 }
 
 class _FirstPageState extends State<FirstPage> {
@@ -24,7 +22,7 @@ class _FirstPageState extends State<FirstPage> {
     });
   }
 
-  final List<Widget> _pages=[
+  final List<Widget> _pages = [
     //Home Page
     const HomePage(),
     //Menu Page
@@ -39,11 +37,12 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar:BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-      items: const [
+        selectedItemColor: Colors.amber,
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Menu"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
