@@ -1,6 +1,5 @@
 import 'package:db_project/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 // ignore: must_be_immutable
@@ -62,10 +61,17 @@ class _SearchPageState extends State<SearchPage> {
       child: Card(
         color: Colors.black87, //black38
         child: Stack(
-          children: [
-            Image.network(
-              "https://www.bilgiyayinevi.com.tr/u/bilgiyayinevi/img/a/c/u/cumhuriyet-turk-mucizesi-birinci-kitap3a00f124bcfa8362a05ca538cc6953bd.jpg",
-              fit: BoxFit.cover,
+          children: [  
+             Container(
+              decoration: const BoxDecoration(
+                color: Colors.black87,
+                image: DecorationImage(
+                  image: NetworkImage(
+                    "https://www.bilgiyayinevi.com.tr/u/bilgiyayinevi/img/a/c/u/cumhuriyet-turk-mucizesi-birinci-kitap3a00f124bcfa8362a05ca538cc6953bd.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             const Positioned(
                 bottom: 20,
@@ -76,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 16,
                     backgroundColor: Colors.amber,
                   ),
                   textAlign: TextAlign.center,
@@ -84,7 +90,7 @@ class _SearchPageState extends State<SearchPage> {
                 ))
           ],
         ),
-      ),
-    );
-  }
+     ),
+);
+}
 }
