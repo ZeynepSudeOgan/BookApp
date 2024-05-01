@@ -87,10 +87,11 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   textAlign: TextAlign.center,
                   maxLines: null,
-                ))
+                )),
+              
           ],
         ),
-     ),
+),
 );
 }
 }
