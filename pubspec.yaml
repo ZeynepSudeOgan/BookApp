@@ -39,6 +39,8 @@ dependencies:
   hexcolor: ^3.0.1
   #google_fonts: ^6.2.0
   google: ^0.0.1
+  #curved_labeled_navigation_bar: ^2.0.2
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:

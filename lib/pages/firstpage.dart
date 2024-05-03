@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:db_project/pages/home.dart';
 import 'package:db_project/pages/menu.dart';
 import 'package:db_project/pages/profile.dart';
 import 'package:db_project/pages/search.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -37,16 +39,17 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.amber,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Menu"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        backgroundColor: HexColor("#FCF5E5"),
+        items: [
+          Icon(Icons.home,
+              color: _selectedIndex == 0 ? Colors.black45 : Colors.black26),
+          Icon(Icons.menu,
+              color: _selectedIndex == 1 ? Colors.black45 : Colors.black26),
+          Icon(Icons.search,
+              color: _selectedIndex == 2 ? Colors.black45 : Colors.black26),
         ],
       ),
     );
