@@ -15,5 +15,5 @@ class Book {
   int? totalUserVoted;
   double? star;
 
-  Book({required this.id, required this.authorId});
+  Book({required this.id, required this.name, required this.imageLink});
 }
