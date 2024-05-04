@@ -1,4 +1,3 @@
-import 'package:db_project/pages/book_detail_page.dart';
 import 'package:db_project/pages/main_page.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/providers/data_provider.dart';
