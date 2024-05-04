@@ -3,6 +3,7 @@ import 'package:db_project/pages/category_tab.dart';
 import 'package:db_project/pages/drawer_child.dart';
 import 'package:db_project/pages/home_tab.dart';
 import 'package:db_project/pages/list_tab.dart';
+import 'package:db_project/widgets/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -37,6 +38,17 @@ class _MainPageState extends State<MainPage> {
       ),
       appBar: AppBar(
         title: Text(appbarTitle()),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
       ),
       body: body,
       bottomNavigationBar: CurvedNavigationBar(

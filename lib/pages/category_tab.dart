@@ -17,40 +17,22 @@ class _CategoryTabState extends State<CategoryTab> {
     categoryNames = await DataManager.getCategoryNames();
   }
 
-  bool isSearchActive = false;
-  TextEditingController textEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return AsyncBuilder(
       future: getData(),
       builder: (context, value) => Column(children: [
-        SearchBar(
-          controller: textEditingController,
-          onTap: () {
-            setState(() {
-              isSearchActive = !isSearchActive;
-              textEditingController.clear();
-            });
-          },
-          onChanged: (value) {
-            print("print_test" + value);
-          },
-        ),
-        if (!isSearchActive)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20),
-                itemBuilder: (context, index) => gridItem(index),
-                itemCount: categoryNames.length,
-              ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
+              itemBuilder: (context, index) => gridItem(index),
+              itemCount: categoryNames.length,
             ),
           ),
+        ),
       ]),
     );
   }

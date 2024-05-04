@@ -1,3 +1,4 @@
+import 'package:db_project/pages/account_settings_page.dart';
 import 'package:flutter/material.dart';
 
 class DrawerChild extends StatelessWidget {
@@ -17,7 +18,11 @@ class DrawerChild extends StatelessWidget {
         drawerButton(
             context: context,
             text: "Account Settings",
-            onClick: () {},
+            onClick: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const AccountSettingsPage(),
+              ));
+            },
             icon: const Icon(Icons.manage_accounts_rounded)),
         drawerButton(
             context: context,
