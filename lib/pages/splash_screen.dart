@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   DataProvider? dataProvider;
 
   Future<void> loadData() async {
-    await dataProvider!.init();
+    //await dataProvider!.init();
   }
 
   @override

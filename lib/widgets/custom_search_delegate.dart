@@ -1,9 +1,9 @@
 import 'package:async_builder/async_builder.dart';
-import 'package:db_project/models/book.dart';
+import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/pages/book_detail_page.dart';
+import 'package:db_project/utils/data_manager.dart';
 import 'package:db_project/utils/providers/data_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   DataProvider? dataProvider;
@@ -42,12 +42,9 @@ class CustomSearchDelegate extends SearchDelegate {
     return Theme.of(context);
   }
 
-  List<Book> books = [];
+  List<BookSimple> books = [];
   @override
   Widget buildSuggestions(BuildContext context) {
-    dataProvider = Provider.of<DataProvider>(context, listen: false);
-    books = dataProvider!.books;
-
     return AsyncBuilder(
       future: prepareSuggestionList(),
       builder: (context, value) => Padding(
@@ -60,8 +57,9 @@ class CustomSearchDelegate extends SearchDelegate {
     );
   }
 
-  Future<List<Book?>> prepareSuggestionList() async {
-    List<Book> suggestions = (query.isEmpty
+  Future<List<BookSimple?>> prepareSuggestionList() async {
+    books = await DataManager.getAllBooksSimply();
+    List<BookSimple> suggestions = (query.isEmpty
         ? books.where((element) => element.name != null).toList()
         : books
             .where((element) => element.name != null)
@@ -71,7 +69,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return suggestions;
   }
 
-  Widget listItem(BuildContext context, Book? book) {
+  Widget listItem(BuildContext context, BookSimple? book) {
     if (book != null) {
       return Card(
         color: Colors.grey[0],

@@ -1,5 +1,5 @@
 import 'package:async_builder/async_builder.dart';
-import 'package:db_project/models/book.dart';
+import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/models/category.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:db_project/utils/data_manager.dart';
@@ -14,7 +14,7 @@ class CategoryBookListPage extends StatefulWidget {
 }
 
 class _CategoryBookListPageState extends State<CategoryBookListPage> {
-  List<Book> books = [];
+  List<BookSimple> books = [];
   Future<void> getData() async {
     books = await DataManager.getBooksByCategory(widget.category);
   }

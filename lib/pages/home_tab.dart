@@ -1,5 +1,5 @@
 import 'package:async_builder/async_builder.dart';
-import 'package:db_project/models/book.dart';
+import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:db_project/utils/data_manager.dart';
 import 'package:db_project/utils/providers/data_provider.dart';
@@ -14,8 +14,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   DataProvider? dataProvider;
-  List<Book> books = [];
-  List<Book> recommendations = [];
+  List<BookSimple> recommendations = [];
 
   Future<void> getRecommandations() async {
     recommendations = await DataManager.getRecommandations();

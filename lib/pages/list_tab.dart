@@ -1,5 +1,5 @@
 import 'package:async_builder/async_builder.dart';
-import 'package:db_project/models/book.dart';
+import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/utils/data_manager.dart';
 import 'package:db_project/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 class ListTab extends StatelessWidget {
   ListTab({super.key});
 
-  List<Book> readingBooks = [];
-  List<Book> readBooks = [];
-  List<Book> willReadBooks = [];
+  List<BookSimple> readingBooks = [];
+  List<BookSimple> readBooks = [];
+  List<BookSimple> willReadBooks = [];
 
   Future<void> getData() async {
     readBooks = await DataManager.getReadBooks(1);

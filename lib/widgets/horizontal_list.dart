@@ -1,4 +1,4 @@
-import 'package:db_project/models/book.dart';
+import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class HorizontalList extends StatefulWidget {
       required this.list,
       this.height = 150,
       this.widht = 100});
-  List<Book> list;
+  List<BookSimple> list;
   double widht;
   double height;
   String categoryName;
@@ -20,7 +20,7 @@ class HorizontalList extends StatefulWidget {
 
 class _HorizontalListState extends State<HorizontalList> {
   ScrollController scrollController = ScrollController();
-  List<Book> list = [];
+  List<BookSimple> list = [];
   @override
   void initState() {
     super.initState();
