@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+class DrawerChild extends StatelessWidget {
+  const DrawerChild({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * .2,
+          child: Image.network(
+            "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        drawerButton(
+            context: context,
+            text: "Account Settings",
+            onClick: () {},
+            icon: const Icon(Icons.manage_accounts_rounded)),
+        drawerButton(
+            context: context,
+            text: "Log out",
+            onClick: () {
+              print("clicked");
+            })
+      ],
+    );
+  }
+
+  Widget drawerButton(
+      {required BuildContext context,
+      required String text,
+      required void Function() onClick,
+      Icon? icon}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          color: Colors.black38,
+          child: InkWell(
+            onTap: onClick,
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) icon,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(text),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

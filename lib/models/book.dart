@@ -15,5 +15,20 @@ class Book {
   int? totalUserVoted;
   double? star;
 
-  Book({required this.id, required this.name, required this.imageLink});
+  Book(
+      {this.id = -1,
+      this.authorId = -1,
+      this.categoryId = -1,
+      this.publisherId = -1,
+      this.typeId = -1,
+      this.languageId = -1,
+      this.name = "null",
+      this.imageLink = "null",
+      this.description = "null",
+      this.isbn = "null",
+      this.pageCount = "null",
+      this.releaseDate = "null",
+      this.star = 0.0,
+      this.totalUserVoted = 0,
+      this.totalVote = 0});
 }

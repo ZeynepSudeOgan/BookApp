@@ -1,3 +1,6 @@
+import 'package:async_builder/async_builder.dart';
+import 'package:db_project/models/category.dart';
+import 'package:db_project/utils/data_manager.dart';
 import 'package:flutter/material.dart';
 
 class CategoryTab extends StatefulWidget {
@@ -8,29 +11,62 @@ class CategoryTab extends StatefulWidget {
 }
 
 class _CategoryTabState extends State<CategoryTab> {
+  List<Category> categoryNames = [];
+
+  Future<void> getData() async {
+    categoryNames = await DataManager.getCategoryNames();
+  }
+
+  bool isSearchActive = false;
+  TextEditingController textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const SearchBar(),
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
-            itemBuilder: (context, index) => gridItem(index),
-            itemCount: 5,
-          ),
+    return AsyncBuilder(
+      future: getData(),
+      builder: (context, value) => Column(children: [
+        SearchBar(
+          controller: textEditingController,
+          onTap: () {
+            setState(() {
+              isSearchActive = !isSearchActive;
+              textEditingController.clear();
+            });
+          },
+          onChanged: (value) {
+            print("print_test" + value);
+          },
         ),
-      ),
-    ]);
+        if (!isSearchActive)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20),
+                itemBuilder: (context, index) => gridItem(index),
+                itemCount: categoryNames.length,
+              ),
+            ),
+          ),
+      ]),
+    );
   }
 
   Widget gridItem(int index) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.pink, borderRadius: BorderRadius.circular(20)),
-      child: Center(child: Text(index.toString())),
+        color: Colors.pink,
+        borderRadius: BorderRadius.circular(20),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(categoryNames[index].imageLink ??
+              "https://www.limonhost.net/makaleler/wp-content/uploads/2020/10/404-not-found-sayfa-bulunamadi-hatasi-ve-cozumu.png"),
+        ),
+      ),
+      child: Center(child: Text(categoryNames[index].name ?? "null")),
     );
   }
 }

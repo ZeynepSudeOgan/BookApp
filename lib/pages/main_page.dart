@@ -1,8 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:db_project/pages/category_tab.dart';
+import 'package:db_project/pages/drawer_child.dart';
 import 'package:db_project/pages/home_tab.dart';
 import 'package:db_project/pages/list_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -26,8 +28,15 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SafeArea(
+        child: Drawer(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.horizontal(right: Radius.circular(20))),
+            child: DrawerChild()),
+      ),
       appBar: AppBar(
-        title: Text("current index: ${currentIndex.toRadixString(2)}"),
+        title: Text(appbarTitle()),
       ),
       body: body,
       bottomNavigationBar: CurvedNavigationBar(
@@ -63,6 +72,19 @@ class _MainPageState extends State<MainPage> {
       default:
         body = const HomeTab();
         break;
+    }
+  }
+
+  String appbarTitle() {
+    switch (currentIndex) {
+      case 0:
+        return "Recommandations";
+      case 1:
+        return "My List";
+      case 2:
+        return "Categories";
+      default:
+        return "Recommandations";
     }
   }
 }
