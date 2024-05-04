@@ -1,14 +1,16 @@
+import 'package:db_project/models/book.dart';
+import 'package:db_project/pages/book_detail_page.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class HorizontalList<T> extends StatefulWidget {
+class HorizontalList extends StatefulWidget {
   HorizontalList(
       {super.key,
       required this.categoryName,
       required this.list,
       this.height = 150,
       this.widht = 100});
-  List<T> list;
+  List<Book> list;
   double widht;
   double height;
   String categoryName;
@@ -18,6 +20,12 @@ class HorizontalList<T> extends StatefulWidget {
 
 class _HorizontalListState extends State<HorizontalList> {
   ScrollController scrollController = ScrollController();
+  List<Book> list = [];
+  @override
+  void initState() {
+    super.initState();
+    list = widget.list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +46,7 @@ class _HorizontalListState extends State<HorizontalList> {
                     padding: const EdgeInsets.only(right: 10.0),
                     child: listItem(index),
                   ),
-                  itemCount: widget.list.length,
+                  itemCount: list.length,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
@@ -95,14 +103,27 @@ class _HorizontalListState extends State<HorizontalList> {
   }
 
   Widget listItem(int index) {
-    return Container(
-      width: widget.widht,
-      decoration: BoxDecoration(
-        color: Colors.amber,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-        child: Text(widget.list[index].toString()),
+    return InkWell(
+      onTap: () {
+        if (list[index].id != null) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => BookDetailPage(bookId: list[index].id!),
+          ));
+        }
+      },
+      child: Container(
+        width: widget.widht,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(list[index].imageLink ??
+                  "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg")),
+          color: Colors.amber,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(
+          child: Text(list[index].name ?? "null"),
+        ),
       ),
     );
   }

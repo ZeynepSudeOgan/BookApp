@@ -1,36 +1,37 @@
 import 'package:async_builder/async_builder.dart';
 import 'package:db_project/models/book.dart';
+import 'package:db_project/models/category.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:db_project/utils/data_manager.dart';
-import 'package:db_project/utils/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 
-class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
-
+// ignore: must_be_immutable
+class CategoryBookListPage extends StatefulWidget {
+  CategoryBookListPage({super.key, required this.category});
+  Category category;
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  State<CategoryBookListPage> createState() => _CategoryBookListPageState();
 }
 
-class _HomeTabState extends State<HomeTab> {
-  DataProvider? dataProvider;
+class _CategoryBookListPageState extends State<CategoryBookListPage> {
   List<Book> books = [];
-  List<Book> recommendations = [];
-
-  Future<void> getRecommandations() async {
-    recommendations = await DataManager.getRecommandations();
+  Future<void> getData() async {
+    books = await DataManager.getBooksByCategory(widget.category);
   }
 
   @override
   Widget build(BuildContext context) {
     return AsyncBuilder(
-      future: getRecommandations(),
+      future: getData(),
       waiting: (context) => const CircularProgressIndicator(),
-      builder: (context, value) => GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
-        itemBuilder: (context, index) => gridItem(context, index),
-        itemCount: recommendations.length,
+      builder: (context, value) => Scaffold(
+        appBar: AppBar(),
+        body: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
+          itemBuilder: (context, index) => gridItem(context, index),
+          itemCount: books.length,
+        ),
       ),
     );
   }
@@ -38,10 +39,9 @@ class _HomeTabState extends State<HomeTab> {
   Widget gridItem(BuildContext context, int index) {
     return InkWell(
       onTap: () {
-        if (recommendations[index].id != null) {
+        if (books[index].id != null) {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                BookDetailPage(bookId: recommendations[index].id!),
+            builder: (context) => BookDetailPage(bookId: books[index].id!),
           ));
         }
       },
@@ -51,7 +51,7 @@ class _HomeTabState extends State<HomeTab> {
           image: DecorationImage(
               fit: BoxFit.cover,
               opacity: .4,
-              image: NetworkImage(recommendations[index].imageLink ??
+              image: NetworkImage(books[index].imageLink ??
                   "https://www.limonhost.net/makaleler/wp-content/uploads/2020/10/404-not-found-sayfa-bulunamadi-hatasi-ve-cozumu.png")),
           borderRadius: BorderRadius.circular(20),
         ),
@@ -66,7 +66,7 @@ class _HomeTabState extends State<HomeTab> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                 child: Text(
-                  recommendations[index].name ?? "null",
+                  books[index].name ?? "null",
                 ),
               ),
             )),

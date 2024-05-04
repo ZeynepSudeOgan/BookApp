@@ -24,12 +24,7 @@ class DrawerChild extends StatelessWidget {
               ));
             },
             icon: const Icon(Icons.manage_accounts_rounded)),
-        drawerButton(
-            context: context,
-            text: "Log out",
-            onClick: () {
-              print("clicked");
-            })
+        drawerButton(context: context, text: "Log out", onClick: () {})
       ],
     );
   }

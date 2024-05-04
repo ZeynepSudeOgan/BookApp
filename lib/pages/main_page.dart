@@ -5,7 +5,6 @@ import 'package:db_project/pages/home_tab.dart';
 import 'package:db_project/pages/list_tab.dart';
 import 'package:db_project/widgets/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
