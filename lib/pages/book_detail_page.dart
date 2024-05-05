@@ -1,4 +1,5 @@
 import 'package:async_builder/async_builder.dart';
+
 import 'package:db_project/models/book.dart';
 import 'package:db_project/utils/data_manager.dart';
 import 'package:flutter/material.dart';
@@ -38,65 +39,56 @@ class BookDetailPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 15),
-                //Text("bookId:${book!.name}"),
+                Text("bookId: ${book?.name ?? "null"}"),
                 const SizedBox(height: 15),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        Text("Release Date"),
-                        //Text("${book!.releaseDate}")
+                        Text("Release Date: ${book?.releaseDate ?? "Unknown"}"),
                       ],
                     ),
-                    Column(
+                    const Column(
                       children: [
                         Text("Author"),
                       ], //yapamadımm ama yşne de yazdım bir şeyler :(
                     ),
-                    Column(
+                    const Column(
                       children: [Text("Rating")],
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                 Padding(
-                  padding: const EdgeInsets.all(10),
+                Padding(
+                  padding: const EdgeInsets.all(1),
                   child: SizedBox(
                     child: Card(
-                      color: Colors.grey[900],
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text("About Book"),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Flexible(
-                                  child: Text("descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription"))
-                            ],
-                          )
-                        ],
+                      color: Colors.grey[800],
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("About Book"),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Flexible(
+                                    child: Text(
+                                        "descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription"))
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const Text("Auther part"), 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network("https://i.dr.com.tr/pimages/Content/Uploads/ArtistImages/artist__260259.jpg",
-                        width: 160,),
-                      ),
-                      const Text("Albert Camus"), //buraya nasıl author name çekeceğimi bilmediğim için direkt yazdım
-                    ],
-                )
               ],
             ),
           ),
