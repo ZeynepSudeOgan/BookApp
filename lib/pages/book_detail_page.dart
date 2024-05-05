@@ -25,63 +25,78 @@ class BookDetailPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          "https://www.canyayinlari.com/productimages/117775/original/9789750715709_735.jpg",
-                          width: 160,
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        "https://www.canyayinlari.com/productimages/117775/original/9789750715709_735.jpg",
+                        width: 160,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 15),
-                Text("bookId:${book!.name ?? "null"}"),
+                //Text("bookId:${book!.name}"),
                 const SizedBox(height: 15),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        Text("Release Date:${book!.releaseDate}"),
+                        Text("Release Date"),
+                        //Text("${book!.releaseDate}")
                       ],
                     ),
                     Column(
                       children: [
-                        Text("Author:${book!.authorId}"),
+                        Text("Author"),
                       ], //yapamadımm ama yşne de yazdım bir şeyler :(
                     ),
                     Column(
-                      children: [Text("Rating:${book!.totalVote}")],
+                      children: [Text("Rating")],
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Padding(
+                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
+                  child: SizedBox(
+                    child: Card(
+                      color: Colors.grey[900],
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("About Book"),
+                          Row(
+                            children: [
+                              Text("About Book"),
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: Text("descriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescriptiondescription"))
+                            ],
+                          )
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Flexible(
-                              child: Text("description:${book!.description}"))
-                        ],
-                      )
-                    ],
+                    ),
                   ),
                 ),
-                const Text("Auther")
+                const Text("Auther part"), 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network("https://i.dr.com.tr/pimages/Content/Uploads/ArtistImages/artist__260259.jpg",
+                        width: 160,),
+                      ),
+                      const Text("Albert Camus"), //buraya nasıl author name çekeceğimi bilmediğim için direkt yazdım
+                    ],
+                )
               ],
             ),
           ),
