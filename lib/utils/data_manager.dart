@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:db_project/models/author.dart';
 import 'package:db_project/models/book.dart';
 import 'package:db_project/models/book_simple.dart';
+import 'package:db_project/models/book_star.dart';
 import 'package:db_project/models/category.dart';
+import 'package:db_project/models/read_status.dart';
 
 class DataManager {
   @Deprecated("Dont need to this method")
@@ -45,6 +48,10 @@ class DataManager {
     return all.where((element) => element.id == bookId).toList().first;
   }
 
+  static Future<Author> getAuthorById(int? authorId) async {
+    return Author(id: authorId);
+  }
+
   static Future<List<BookSimple>> getAllBooksSimply() async {
     return [
       BookSimple(
@@ -78,7 +85,7 @@ class DataManager {
     ];
   }
 
-  static Future<List<Category>> getCategoryNames() async {
+  static Future<List<Category>> getCategories() async {
     return [
       Category(
           id: 1,
@@ -158,6 +165,15 @@ class DataManager {
     return _getRandomElements<BookSimple>(all, all.length ~/ 2);
   }
 
+  static Future<void> updateStar(BookStar star) async {
+    return;
+  }
+
+  static Future<BookStar> getBookStar(int? userId, int? bookId) async {
+    Random random = Random();
+    return BookStar(userId: userId, bookId: bookId, star: random.nextInt(5));
+  }
+
   static List<T> _getRandomElements<T>(List<T> list, int count) {
     if (list.length <= count) {
       return List<T>.from(list);
@@ -179,18 +195,34 @@ class DataManager {
     return [books[0], books[2], books[5]];
   }
 
-  static Future<List<BookSimple>> getReadBooks(int userID) async {
-    var books = await getAllBooksSimply();
-    return [books[1], books[4], books[2]];
+  static Future<ReadStatus> getReadStatusById(int? userId, int? bookId) async {
+    Random random = Random();
+    return ReadStatus(
+        userId: userId,
+        bookId: bookId,
+        readStatus: ReadStatusEnum.values[random.nextInt(4)]);
   }
 
-  static Future<List<BookSimple>> getWillReadBooks(int userID) async {
-    var books = await getAllBooksSimply();
-    return [books[2], books[3], books[5], books[1]];
+  static Future<List<BookSimple>> getBooksByReadingInfo(
+      int userID, ReadStatusEnum readStatus) async {
+    List<BookSimple> books = await DataManager.getAllBooksSimply();
+    switch (readStatus) {
+      case ReadStatusEnum.read:
+        return [books[1], books[2], books[3]];
+      case ReadStatusEnum.reading:
+        return [books[0], books[1]];
+      case ReadStatusEnum.willRead:
+        return [books[1]];
+      default:
+        return [books[1], books[4]];
+    }
   }
 
-  static Future<List<BookSimple>> getReadingBooks(int userID) async {
-    var books = await getAllBooksSimply();
-    return [books[1], books[2], books[3], books[4], books[5]];
+  static Future<void> updateReadStatus(ReadStatus readStatus) async {
+    return;
+  }
+
+  static Future<List<BookSimple>> getBooksByAuthorId(int? authorId) async {
+    return await getAllBooksSimply();
   }
 }

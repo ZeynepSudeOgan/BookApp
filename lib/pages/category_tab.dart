@@ -15,7 +15,7 @@ class _CategoryTabState extends State<CategoryTab> {
   List<Category> categoryNames = [];
 
   Future<void> getData() async {
-    categoryNames = await DataManager.getCategoryNames();
+    categoryNames = await DataManager.getCategories();
   }
 
   @override
