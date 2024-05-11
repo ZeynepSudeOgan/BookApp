@@ -1,3 +1,4 @@
+import 'package:db_project/pages/login_page.dart';
 import 'package:db_project/pages/main_page.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/providers/data_provider.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         routes: {
           MainPage.routeName: (context) => const MainPage(),
         },
-        home: const SplashScreen(),
+        home: const LoginPage(),
       ),
     );
   }

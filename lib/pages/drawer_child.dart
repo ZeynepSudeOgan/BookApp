@@ -1,4 +1,5 @@
 import 'package:db_project/pages/account_settings_page.dart';
+import 'package:db_project/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class DrawerChild extends StatelessWidget {
@@ -24,7 +25,15 @@ class DrawerChild extends StatelessWidget {
               ));
             },
             icon: const Icon(Icons.manage_accounts_rounded)),
-        drawerButton(context: context, text: "Log out", onClick: () {})
+        drawerButton(
+            context: context,
+            text: "Log out",
+            onClick: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false,
+              );
+            })
       ],
     );
   }

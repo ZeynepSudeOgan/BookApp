@@ -6,6 +6,7 @@ import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/models/book_star.dart';
 import 'package:db_project/models/category.dart';
 import 'package:db_project/models/read_status.dart';
+import 'package:db_project/models/user.dart';
 
 class DataManager {
   @Deprecated("Dont need to this method")
@@ -224,5 +225,25 @@ class DataManager {
 
   static Future<List<BookSimple>> getBooksByAuthorId(int? authorId) async {
     return await getAllBooksSimply();
+  }
+
+  static Future<int?> isValidAccount(String username, String password) async {
+    if (username == "t" && password == "t") {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
+  static Future<User> getUser(String id) async {
+    return User();
+  }
+
+  static Future<void> updateUser(User updated) async {
+    return;
+  }
+
+  static Future<void> insertNewUser(User newUser) async {
+    return;
   }
 }

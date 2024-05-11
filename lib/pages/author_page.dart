@@ -16,7 +16,6 @@ class _AuthorPageState extends State<AuthorPage> {
   bool isLoading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isLoading = true;
     DataManager.getBooksByAuthorId(widget.authorId).then((value) {
