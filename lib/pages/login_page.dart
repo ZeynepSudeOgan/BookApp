@@ -84,11 +84,15 @@ class _LoginPageState extends State<LoginPage> {
                     height: 55,
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ));
-                      },
+                      onPressed: () async {
+                          var response = await DataManager.isValidAccount(
+                              usernameController.text, passwordController.text);
+                          if (response != null && response >= 0) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const SplashScreen(),
+                            ));
+                          }
+                        },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black87,
                         shape: RoundedRectangleBorder(
@@ -124,17 +128,14 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(left: 273),
                     child: SizedBox(
                       height: 40,
-                      width: 100,
+                      width: 200,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          var response = await DataManager.isValidAccount(
-                              usernameController.text, passwordController.text);
-                          if (response != null && response >= 0) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SplashScreen(),
-                            ));
-                          }
-                        },
+                        onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                ));
+              },
+
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black87,
                           shape: RoundedRectangleBorder(
@@ -142,15 +143,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         child: const Text(
-                          "Sign in",
+                          "Sign Up",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 15,
                               color: Colors.white),
                         ),
                       ),
                     ),
                   ),
+
+
+
                 ],
               ),
             ),
