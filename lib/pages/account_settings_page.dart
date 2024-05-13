@@ -15,6 +15,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, //ortaya aldım ama isterseniz başta dursun
         title: const Text("Account Settings"),
       ),
       body: Column(

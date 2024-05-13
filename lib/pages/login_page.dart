@@ -17,52 +17,146 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Login"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Username",
-                prefixIcon: Icon(Icons.account_circle_rounded),
-              )),
-          TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Password",
-                prefixIcon: Icon(Icons.key_rounded),
-              )),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
-                onPressed: () async {
-                  var response = await DataManager.isValidAccount(
-                      usernameController.text, passwordController.text);
-                  if (response != null && response >= 0) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SplashScreen(),
-                    ));
-                  }
-                },
-                icon: const Icon(Icons.login_rounded),
-                label: const Text("Login")),
+      body: Stack(children: [
+        Container(
+          child: const Padding(
+            padding: EdgeInsets.only(top: 60.0, left: 22),
+            child: Text(
+              "Hello\nLog in",
+              style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-          ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const RegisterPage(),
-                ));
-              },
-              icon: const Icon(Icons.add),
-              label: const Text("Sign up"))
-        ],
-      ),
-    );
-  }
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 200),
+          child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+              color: Colors.white,
+            ),
+            height: double.infinity,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 18, right: 18),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextField(
+                    onTapOutside: (_) => FocusScope.of(context)
+                        .unfocus(), //textfield dışına basınca klavye gitsin diye
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                        suffixIcon: Icon(
+                          Icons.check,
+                          color: Colors.grey,
+                        ),
+                        label: Text(
+                          "User Name",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        )),
+                  ),
+                  TextField(
+                    onTapOutside: (_) => FocusScope.of(context).unfocus(),
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        suffixIcon: Icon(
+                          Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        label: Text(
+                          "Password",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        )),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    height: 55,
+                    width: 300,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black87,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      child: const Text(
+                        "Log in",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 80),
+                  const Align(
+                    alignment: Alignment.bottomRight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 273),
+                    child: SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          var response = await DataManager.isValidAccount(
+                              usernameController.text, passwordController.text);
+                          if (response != null && response >= 0) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const SplashScreen(),
+                            ));
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black87,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: const Text(
+                          "Sign in",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ]),
+);
+}
 }
