@@ -223,7 +223,8 @@ class DataManager {
     return;
   }
 
-  static Future<List<BookSimple>> getBooksByAuthorId(int? authorId) async {
+  static Future<List<BookSimple>> getBookSimplesByAuthorId(
+      int? authorId) async {
     return await getAllBooksSimply();
   }
 
