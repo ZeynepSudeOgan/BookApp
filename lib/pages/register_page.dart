@@ -25,40 +25,105 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register"),
+        title: const Text(""),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Username",
-                prefixIcon: Icon(Icons.account_circle_rounded),
-              )),
-          TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Password",
-                prefixIcon: Icon(Icons.key_rounded),
-              )),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
-                onPressed: () async {
-                  newUser.username = usernameController.text;
-                  newUser.password = passwordController.text;
-                  await DataManager.insertNewUser(newUser);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SplashScreen(),
-                  ));
-                },
-                icon: const Icon(Icons.login_rounded),
-                label: const Text("Register")),
+          Container(
+            child: const Padding(
+              padding: EdgeInsets.only(top: 25, left: 22),
+              child: Text(
+                "Let's Create Your Account",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
+          Padding(
+              padding: const EdgeInsets.only(top: 130),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  color: Colors.white,
+                ),
+                height: double.infinity,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18, right: 18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextField(
+                        onTapOutside: (_) => FocusScope.of(context)
+                        .unfocus(),
+                          controller: usernameController,
+                          decoration: const InputDecoration(
+                              suffixIcon: Icon(
+                                Icons.account_circle_rounded,
+                                color: Colors.grey,
+                              ),
+                              label: Text(
+                                "Username",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ))),
+                      TextField(
+                        onTapOutside: (_) => FocusScope.of(context)
+                        .unfocus(),
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            suffixIcon: Icon(
+                              Icons.key_rounded,
+                              color: Colors.grey,
+                            ),
+                            label: Text(
+                              "Password",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            )),
+                      ),
+                      const SizedBox(height: 40),
+                      SizedBox(
+                        height: 55,
+                        width: 300,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            newUser.username = usernameController.text;
+                            newUser.password = passwordController.text;
+                            await DataManager.insertNewUser(newUser);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const SplashScreen(),
+                            ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black87,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
+                          child: const Text(
+                            "Register",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ))
         ],
       ),
     );
