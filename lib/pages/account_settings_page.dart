@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AccountSettingsPage extends StatefulWidget {
@@ -41,8 +42,9 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                         height: 150,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: Image.network(
-                            "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg",
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg",
                             fit: BoxFit.cover,
                           ),
                         ),

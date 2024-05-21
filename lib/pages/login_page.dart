@@ -18,31 +18,29 @@ class _LoginPageState extends State<LoginPage> {
   EdgeInsets horizontalPadding = const EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(
-            flex: 3,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: horizontalPadding,
-                child: const Text(
-                  "Hello\nLog in",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
+    return Scaffold(
+      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Expanded(
+          flex: 3,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: horizontalPadding,
+              child: const Text(
+                "Hello\nLog in",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
-          Expanded(
-            flex: 7,
-            child: mainWidget(context),
-          ),
-        ]),
-      ),
+        ),
+        Expanded(
+          flex: 7,
+          child: mainWidget(context),
+        ),
+      ]),
     );
   }
 
@@ -58,40 +56,8 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              onTapOutside: (_) => FocusScope.of(context)
-                  .unfocus(), //textfield dışına basınca klavye gitsin diye
-              controller: usernameController,
-              decoration: const InputDecoration(
-                  suffixIcon: Icon(
-                    Icons.check,
-                    color: Colors.grey,
-                  ),
-                  label: Text(
-                    "Username",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  )),
-            ),
-            TextField(
-              onTapOutside: (_) => FocusScope.of(context).unfocus(),
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                  suffixIcon: Icon(
-                    Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
-                  label: Text(
-                    "Password",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  )),
-            ),
+            usernameField(context),
+            passwordField(context),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * .15,
@@ -99,15 +65,7 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    var response = await DataManager.isValidAccount(
-                        usernameController.text, passwordController.text);
-                    if (response != null && response >= 0) {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SplashScreen(),
-                      ));
-                    }
-                  },
+                  onPressed: () async => await login(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black87,
                     shape: RoundedRectangleBorder(
@@ -131,6 +89,65 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> login(BuildContext context) async {
+    var response = await DataManager.isValidAccount(
+        usernameController.text, passwordController.text);
+    if (response != null && response >= 0) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const SplashScreen(),
+      ));
+    }
+  }
+
+  TextField usernameField(BuildContext context) {
+    return TextField(
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
+      controller: usernameController,
+      style: const TextStyle(color: Colors.black),
+      decoration: const InputDecoration(
+          suffixIcon: Icon(
+            Icons.check,
+            color: Colors.grey,
+          ),
+          label: Text(
+            "Username",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          )),
+    );
+  }
+
+  bool obscurePassword = true;
+  TextField passwordField(BuildContext context) {
+    return TextField(
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
+      style: const TextStyle(color: Colors.black),
+      controller: passwordController,
+      obscureText: obscurePassword,
+      decoration: InputDecoration(
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                obscurePassword = !obscurePassword;
+              });
+            },
+            icon: Icon(
+              obscurePassword ? Icons.visibility : Icons.visibility_off,
+              color: Colors.grey,
+            ),
+          ),
+          label: const Text(
+            "Password",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          )),
     );
   }
 

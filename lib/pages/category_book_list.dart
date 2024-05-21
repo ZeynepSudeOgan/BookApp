@@ -1,4 +1,5 @@
 import 'package:async_builder/async_builder.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/models/category.dart';
 import 'package:db_project/pages/book_detail_page.dart';
@@ -51,7 +52,7 @@ class _CategoryBookListPageState extends State<CategoryBookListPage> {
           image: DecorationImage(
               fit: BoxFit.cover,
               opacity: .4,
-              image: NetworkImage(books[index].imageLink ??
+              image: CachedNetworkImageProvider(books[index].imageLink ??
                   "https://www.limonhost.net/makaleler/wp-content/uploads/2020/10/404-not-found-sayfa-bulunamadi-hatasi-ve-cozumu.png")),
           borderRadius: BorderRadius.circular(20),
         ),

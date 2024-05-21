@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,7 @@ class _HorizontalListState extends State<HorizontalList> {
         decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(list[index].imageLink ??
+              image: CachedNetworkImageProvider(list[index].imageLink ??
                   "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg")),
           color: Colors.amber,
           borderRadius: BorderRadius.circular(20),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:db_project/models/author.dart';
 import 'package:db_project/models/book.dart';
 import 'package:db_project/models/book_star.dart';
@@ -61,8 +62,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            book?.imageLink ??
+                          child: CachedNetworkImage(
+                            imageUrl: book?.imageLink ??
                                 "https://www.limonhost.net/makaleler/wp-content/uploads/2020/10/404-not-found-sayfa-bulunamadi-hatasi-ve-cozumu.png",
                             width: 160,
                           ),

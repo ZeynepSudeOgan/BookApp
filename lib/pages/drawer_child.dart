@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:db_project/pages/account_settings_page.dart';
 import 'package:db_project/pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ class DrawerChild extends StatelessWidget {
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * .2,
-          child: Image.network(
-            "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg",
+          child: CachedNetworkImage(
+            imageUrl:
+                "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg",
             fit: BoxFit.cover,
           ),
         ),
