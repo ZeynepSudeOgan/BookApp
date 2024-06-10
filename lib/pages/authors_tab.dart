@@ -1,22 +1,22 @@
 import 'package:async_builder/async_builder.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:db_project/models/category.dart';
-import 'package:db_project/pages/category_book_list.dart';
+import 'package:db_project/models/author.dart';
+import 'package:db_project/pages/author_page.dart';
 import 'package:db_project/utils/data_manager.dart';
 import 'package:flutter/material.dart';
 
-class CategoryTab extends StatefulWidget {
-  const CategoryTab({super.key});
+class AuthorsTab extends StatefulWidget {
+  const AuthorsTab({super.key});
 
   @override
-  State<CategoryTab> createState() => _CategoryTabState();
+  State<AuthorsTab> createState() => _AuthorsTabState();
 }
 
-class _CategoryTabState extends State<CategoryTab> {
-  List<Category> categoryNames = [];
+class _AuthorsTabState extends State<AuthorsTab> {
+  List<Author> authors = [];
 
   Future<void> getData() async {
-    categoryNames = await DataManager.getCategories();
+    authors = await DataManager.getAuthors();
   }
 
   @override
@@ -31,7 +31,7 @@ class _CategoryTabState extends State<CategoryTab> {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
               itemBuilder: (context, index) => gridItem(index),
-              itemCount: categoryNames.length,
+              itemCount: authors.length,
             ),
           ),
         ),
@@ -43,8 +43,7 @@ class _CategoryTabState extends State<CategoryTab> {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              CategoryBookListPage(category: categoryNames[index]),
+          builder: (context) => AuthorPage(id: authors[index].id),
         ));
       },
       child: Container(
@@ -53,7 +52,7 @@ class _CategoryTabState extends State<CategoryTab> {
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: CachedNetworkImageProvider(categoryNames[index].imageLink ??
+            image: CachedNetworkImageProvider(authors[index].imageLink ??
                 "https://www.limonhost.net/makaleler/wp-content/uploads/2020/10/404-not-found-sayfa-bulunamadi-hatasi-ve-cozumu.png"),
           ),
         ),
@@ -68,7 +67,7 @@ class _CategoryTabState extends State<CategoryTab> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
                 child: Text(
-                  categoryNames[index].name ?? "null",
+                  "${authors[index].name ?? "null"} ${authors[index].surname ?? "null"}",
                 ),
               ),
             )),

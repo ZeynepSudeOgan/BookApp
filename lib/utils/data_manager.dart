@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:db_project/models/author.dart';
@@ -7,8 +8,11 @@ import 'package:db_project/models/book_star.dart';
 import 'package:db_project/models/category.dart';
 import 'package:db_project/models/read_status.dart';
 import 'package:db_project/models/user.dart';
+import 'package:http/http.dart' as http;
 
 class DataManager {
+  static String baseUrl = "http://192.168.1.12:3001";
+
   @Deprecated("Dont need to this method")
   static Future<List<Book>> getAllBooks() async {
     return [
@@ -43,17 +47,73 @@ class DataManager {
     ];
   }
 
-  static Future<Book> getBookDetails(int bookId) async {
+  static Future<Book?> getBookDetails(int bookId) async {
+    /*
+    String url = "$baseUrl/book/$bookId";
+    Uri uri = Uri.parse(url);
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);
+    if (json == null) return null;
+    var book = Book.fromJson(json);
+    return book;
+    */
     var all = await DataManager.getAllBooks();
-
     return all.where((element) => element.id == bookId).toList().first;
   }
 
-  static Future<Author> getAuthorById(int? authorId) async {
+  static Future<Author?> getAuthorById(int? authorId) async {
+    /*
+    var response = await http.get(Uri.parse("$baseUrl/author/$authorId"));
+    var json = jsonDecode(response.body);
+    if (json == null) return null;
+    return Author.fromJson(json);
+    */
     return Author(id: authorId);
   }
 
+  static Future<List<Author>> getAuthors() async {
+    return [
+      Author(
+          id: 1,
+          name: "Sami",
+          imageLink:
+              "https://upload.wikimedia.org/wikipedia/tr/c/ca/Ankaral%C4%B1_Nam%C4%B1k.jpg",
+          biography: "Orda burda doğdu, şurda yaişado iırada öldü"),
+      Author(
+          id: 2,
+          name: "Ayşe",
+          imageLink:
+              "https://upload.wikimedia.org/wikipedia/tr/c/ca/Ankaral%C4%B1_Nam%C4%B1k.jpg",
+          biography: "Dünyaya geldiği gibi gitti, arada bir kahve içti."),
+      Author(
+          id: 3,
+          name: "Mehmet",
+          imageLink:
+              "https://upload.wikimedia.org/wikipedia/tr/c/ca/Ankaral%C4%B1_Nam%C4%B1k.jpg",
+          biography:
+              "Bazen düşündü, bazen düşündüğünü sandı, sonra uyuyakaldı."),
+      Author(
+          id: 4,
+          name: "Fatma",
+          imageLink:
+              "https://upload.wikimedia.org/wikipedia/tr/c/ca/Ankaral%C4%B1_Nam%C4%B1k.jpg",
+          biography:
+              "Hayata gözlerini açtı, sonra kapattı. Arada bir şeyler yedi."),
+    ];
+  }
+
   static Future<List<BookSimple>> getAllBooksSimply() async {
+    /*
+    var response = await http.get(Uri.parse("$baseUrl/bookSimply"));
+    List<dynamic> json = jsonDecode(response.body);
+
+    var test = json.map((e) {
+      if (e == null) null;
+      return BookSimple.fromJson(e);
+    }).toList();
+    return test;
+    */
+
     return [
       BookSimple(
           id: 1,
@@ -87,6 +147,12 @@ class DataManager {
   }
 
   static Future<List<Category>> getCategories() async {
+    /*
+    var response = await http.get(Uri.parse("$baseUrl/category"));
+    List<dynamic> json = jsonDecode(response.body);
+    var test = json.map((e) => Category.fromJson(e)).toList();
+    return test;
+    */
     return [
       Category(
           id: 1,
@@ -162,19 +228,50 @@ class DataManager {
   }
 
   static Future<List<BookSimple>> getRecommandations() async {
+    /*
+    var response = await http.get(Uri.parse("$baseUrl/randomBooks"));
+    List<dynamic> json = jsonDecode(response.body);
+    var test = json.map((e) => BookSimple.fromJson(e)).toList();
+    return test;
+    */
     var all = await getAllBooksSimply();
     return _getRandomElements<BookSimple>(all, all.length ~/ 2);
   }
 
   static Future<void> updateStar(BookStar star) async {
+    /*
+    var body = jsonEncode({
+      "userID": star.userId,
+      "bookID": star.bookId,
+      "star": star.star,
+    });
+    var response = await http.post(
+      Uri.parse("$baseUrl/bookStar"),
+      body: body,
+      headers: {"Content-Type": "application/json"},
+    );
+    //TODO: Implement this method
+    */
     return;
   }
 
+  static Future<BookStar> getAvgStar(int? bookId) async {
+    /*
+    var response = await http.get(Uri.parse("$baseUrl/avgStar/$bookId"));
+    var json = jsonDecode(response.body);
+    if (json == null) return BookStar(userId: -1, bookId: -1, star: 0);
+    return BookStar.fromJson(json);
+    */
+    return BookStar(bookId: bookId, star: 1);
+  }
+
   static Future<BookStar> getBookStar(int? userId, int? bookId) async {
+    //TODO: Implement this method
     Random random = Random();
     return BookStar(userId: userId, bookId: bookId, star: random.nextInt(5));
   }
 
+  @Deprecated("Dont need to this method")
   static List<T> _getRandomElements<T>(List<T> list, int count) {
     if (list.length <= count) {
       return List<T>.from(list);
@@ -192,59 +289,72 @@ class DataManager {
   }
 
   static Future<List<BookSimple>> getBooksByCategory(Category category) async {
+    /* var response =
+        await http.get(Uri.parse("$baseUrl/bookByCategory/${category.id}"));
+    List<dynamic> json = jsonDecode(response.body);
+    var test = json.map((e) => BookSimple.fromJson(e)).toList();
+    return test;
+    */
     var books = await getAllBooksSimply();
     return [books[0], books[2], books[5]];
   }
 
-  static Future<ReadStatus> getReadStatusById(int? userId, int? bookId) async {
-    Random random = Random();
-    return ReadStatus(
-        userId: userId,
-        bookId: bookId,
-        readStatus: ReadStatusEnum.values[random.nextInt(4)]);
-  }
-
-  static Future<List<BookSimple>> getBooksByReadingInfo(
-      int userID, ReadStatusEnum readStatus) async {
-    List<BookSimple> books = await DataManager.getAllBooksSimply();
-    switch (readStatus) {
-      case ReadStatusEnum.read:
-        return [books[1], books[2], books[3]];
-      case ReadStatusEnum.reading:
-        return [books[0], books[1]];
-      case ReadStatusEnum.willRead:
-        return [books[1]];
-      default:
-        return [books[1], books[4]];
-    }
-  }
-
-  static Future<void> updateReadStatus(ReadStatus readStatus) async {
-    return;
-  }
-
   static Future<List<BookSimple>> getBookSimplesByAuthorId(
       int? authorId) async {
+    /* var response = await http.get(Uri.parse("$baseUrl/bookByAuthor/$authorId"));
+    List<dynamic> json = jsonDecode(response.body);
+    var test = json.map((e) => BookSimple.fromJson(e)).toList();
+    return test;
+   */
     return await getAllBooksSimply();
   }
 
-  static Future<int?> isValidAccount(String username, String password) async {
-    if (username == "t" && password == "t") {
-      return 1;
-    } else {
-      return -1;
-    }
+  static User testUser =
+      User(id: 1, username: "testUser", password: "testUserPass");
+  static Future<User?> login(String username, String password) async {
+    /* var body = jsonEncode({
+      "userName": username,
+      "password": password,
+    });
+    var response = await http.post(
+      Uri.parse("$baseUrl/user/login"),
+      body: body,
+      headers: {"Content-Type": "application/json"},
+    );
+    var json = jsonDecode(response.body);
+    print(json);
+    if (json == null) return null;
+    return User.fromJson(json);*/
+    return testUser;
   }
 
+  @Deprecated("Dont need to this method")
   static Future<User> getUser(String id) async {
-    return User();
+    var response = await http.get(Uri.parse("$baseUrl/user/$id"));
+    var json = jsonDecode(response.body);
+
+    return testUser;
   }
 
   static Future<void> updateUser(User updated) async {
-    return;
+    //TODO: Implement this method
   }
 
-  static Future<void> insertNewUser(User newUser) async {
-    return;
+  static Future<User?> register(User newUser) async {
+    /*
+    var body = jsonEncode({
+      "userName": newUser.username,
+      "password": newUser.password,
+    });
+    var response = await http.post(
+      Uri.parse("$baseUrl/user/register"),
+      body: body,
+      headers: {"Content-Type": "application/json"},
+    );
+    var json = jsonDecode(response.body);
+    if (json == null) return null;
+    return User.fromJson(json);
+    */
+    return testUser;
   }
 }

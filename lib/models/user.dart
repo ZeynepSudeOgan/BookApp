@@ -13,4 +13,14 @@ class User {
       this.password = "password",
       this.imageLink =
           "https://galeri.netfotograf.com/images/medium/69433C4D690F8A66.jpg"});
+
+  static User fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      surname: json['lastName'],
+      username: json['userName'],
+      imageLink: json['imageLink'],
+    );
+  }
 }

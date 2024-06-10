@@ -1,16 +1,13 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:db_project/pages/authors_tab.dart';
 import 'package:db_project/pages/category_tab.dart';
 import 'package:db_project/pages/drawer_child.dart';
 import 'package:db_project/pages/home_tab.dart';
-import 'package:db_project/pages/list_tab.dart';
 import 'package:db_project/widgets/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
-
-  static const String routeName = "main";
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -28,9 +25,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const SafeArea(
+      drawer: SafeArea(
         child: Drawer(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.horizontal(right: Radius.circular(20))),
             child: DrawerChild()),
@@ -55,7 +52,7 @@ class _MainPageState extends State<MainPage> {
         color: Colors.black,
         items: const [
           Icon(Icons.home, color: Colors.white),
-          Icon(Icons.menu, color: Colors.white),
+          Icon(Icons.person, color: Colors.white),
           Icon(Icons.search, color: Colors.white),
         ],
         index: currentIndex,
@@ -75,7 +72,7 @@ class _MainPageState extends State<MainPage> {
         body = const HomeTab();
         break;
       case 1:
-        body = ListTab();
+        body = const AuthorsTab();
         break;
       case 2:
         body = const CategoryTab();
@@ -91,7 +88,7 @@ class _MainPageState extends State<MainPage> {
       case 0:
         return "Recommandations";
       case 1:
-        return "My List";
+        return "Authors";
       case 2:
         return "Categories";
       default:

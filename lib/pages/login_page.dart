@@ -1,9 +1,9 @@
 import 'package:db_project/pages/register_page.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/data_manager.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:db_project/utils/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -93,11 +93,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login(BuildContext context) async {
-    var response = await DataManager.isValidAccount(
+    var response = await DataManager.login(
         usernameController.text, passwordController.text);
-    if (response != null && response >= 0) {
+    if (response != null) {
+      Provider.of<UserProvider>(context, listen: false).setUser(response);
+
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SplashScreen(),
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Invalid username or password"),
       ));
     }
   }
@@ -159,11 +165,7 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RegisterPage(),
-            ));
-          },
+          onPressed: onSignUpClicked,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black87,
             shape: RoundedRectangleBorder(
@@ -178,5 +180,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
+  }
+
+  void onSignUpClicked() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const RegisterPage(),
+    ));
   }
 }

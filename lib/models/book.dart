@@ -31,4 +31,18 @@ class Book {
       this.star = 0.0,
       this.totalUserVoted = 0,
       this.totalVote = 0});
+
+  static Book fromJson(Map<String, dynamic> json) {
+    return Book(
+      id: json['id'],
+      publisherId: json['publisher_id'],
+      languageId: json['language_id'],
+      name: json['name'],
+      description: json['description'],
+      isbn: json['isbn'],
+      imageLink: json['imageLink'],
+      pageCount: json['pageCount'],
+      releaseDate: json['releaseDate'],
+    );
+  }
 }

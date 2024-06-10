@@ -25,6 +25,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
   bool isLoading = false;
   BookStar? bookStar;
   Author? author;
+  BookStar? userBookStar;
 
   @override
   void initState() {
@@ -39,10 +40,10 @@ class _BookDetailPageState extends State<BookDetailPage> {
 
   Future<void> getData() async {
     book = await DataManager.getBookDetails(widget.bookId);
-    readStatus = await DataManager.getReadStatusById(1, widget.bookId);
     selectedIndex = ReadStatusEnum.values
         .indexOf(readStatus?.readStatus ?? ReadStatusEnum.none);
-    bookStar = await DataManager.getBookStar(1, widget.bookId);
+    bookStar = await DataManager.getAvgStar(widget.bookId);
+    userBookStar = await DataManager.getBookStar(1, widget.bookId);
     author = await DataManager.getAuthorById(book?.authorId ?? -1);
   }
 
@@ -72,7 +73,13 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(book?.name ?? "null"),
+                      child: Text(
+                        book?.name ?? "null",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15.0),
@@ -80,22 +87,16 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
+                      child: ratingBar(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
                       child: bookText(),
                     ),
-                    ratingBar()
                   ],
                 ),
               ),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-                selectedItemColor: Colors.amber,
-                unselectedItemColor: Colors.pink,
-                currentIndex: selectedIndex,
-                onTap: (value) async => await changeReadStatus(value),
-                items: ReadStatusEnum.values
-                    .map((e) => BottomNavigationBarItem(
-                        icon: const Icon(Icons.abc_rounded), label: e.name))
-                    .toList()),
           );
   }
 
@@ -103,27 +104,49 @@ class _BookDetailPageState extends State<BookDetailPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            const Text("Release Date:"),
-            Text(book?.releaseDate ?? "Unknown")
-          ],
-        ),
-        InkWell(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AuthorPage(authorId: book?.authorId),
-          )),
-          child: Card(
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                const Text("Author:"),
-                Text("${author?.name}  ${author?.surname}")
+                const Text("Release Date:"),
+                Text(
+                  book?.releaseDate?.substring(0, 4) ?? "Unknown",
+                  maxLines: null,
+                )
               ],
             ),
           ),
         ),
-        Column(
-          children: [const Text("Rating"), Text((book?.star ?? -1).toString())],
+        InkWell(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AuthorPage(id: book?.authorId),
+          )),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const Text("Author:"),
+                  Text("${author?.name}  ${author?.surname}", maxLines: null)
+                ],
+              ),
+            ),
+          ),
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Text("Rating"),
+                Text(
+                  (bookStar ?? -1).toString(),
+                  maxLines: null,
+                )
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -144,7 +167,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
             ),
             const SizedBox(height: 8),
             Row(
-              children: [Flexible(child: Text(book?.description ?? "null"))],
+              children: [Flexible(child: Text(book?.description ?? ("null")))],
             )
           ],
         ),
@@ -158,7 +181,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
         Icons.star,
         color: Colors.amber,
       ),
-      initialRating: (bookStar?.star ?? 0).toDouble(),
+      initialRating: (userBookStar?.star ?? 0).toDouble(),
       onRatingUpdate: (value) async {
         bookStar?.star = value.round();
         await DataManager.updateStar(bookStar!);
@@ -169,15 +192,4 @@ class _BookDetailPageState extends State<BookDetailPage> {
   }
 
   Widget loadingCase() => const Center(child: CircularProgressIndicator());
-
-  Future<void> changeReadStatus(int index) async {
-    selectedIndex = index;
-    setState(() {});
-    var status = ReadStatusEnum.values[index];
-    ReadStatus readStatus =
-        ReadStatus(userId: 1, bookId: widget.bookId, readStatus: status);
-    await DataManager.updateReadStatus(readStatus);
-    print(
-        "user: ${readStatus.userId} bookId: ${readStatus.bookId} has readStatus: ${readStatus.readStatus?.name}");
-  }
 }

@@ -26,7 +26,9 @@ class _CategoryBookListPageState extends State<CategoryBookListPage> {
       future: getData(),
       waiting: (context) => const CircularProgressIndicator(),
       builder: (context, value) => Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(widget.category.name ?? "null"),
+        ),
         body: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
