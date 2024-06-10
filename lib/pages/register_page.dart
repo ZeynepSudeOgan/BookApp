@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:db_project/models/user.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/data_manager.dart';
@@ -63,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 20, right: 20, left: 20),
+                  padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,

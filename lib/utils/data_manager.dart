@@ -6,7 +6,6 @@ import 'package:db_project/models/book.dart';
 import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/models/book_star.dart';
 import 'package:db_project/models/category.dart';
-import 'package:db_project/models/read_status.dart';
 import 'package:db_project/models/user.dart';
 import 'package:http/http.dart' as http;
 

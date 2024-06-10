@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:db_project/pages/register_page.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/data_manager.dart';

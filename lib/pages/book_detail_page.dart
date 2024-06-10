@@ -185,7 +185,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
       onRatingUpdate: (value) async {
         bookStar?.star = value.round();
         await DataManager.updateStar(bookStar!);
-        print("${bookStar?.star} is given to bookId: ${widget.bookId}");
       },
       allowHalfRating: false,
     );

@@ -5,8 +5,8 @@ import 'package:db_project/models/book_simple.dart';
 import 'package:db_project/pages/book_detail_page.dart';
 import 'package:db_project/utils/data_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // If you're using GoogleFonts
 
+// ignore: must_be_immutable
 class AuthorPage extends StatelessWidget {
   final int? id;
   Author? author;
