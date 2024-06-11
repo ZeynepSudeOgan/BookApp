@@ -16,7 +16,7 @@ class Author {
     return Author(
       id: json['id'],
       name: json['name'],
-      surname: json['lastname'],
+      surname: json['surname'],
       biography: json['biography'],
       imageLink: json['imageLink'],
     );

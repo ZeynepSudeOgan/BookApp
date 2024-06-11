@@ -10,7 +10,7 @@ class Book {
   String? isbn;
   String? imageLink;
   String? releaseDate;
-  String? pageCount;
+  int? pageCount;
   int? totalVote;
   int? totalUserVoted;
   double? star;
@@ -26,7 +26,7 @@ class Book {
       this.imageLink = "null",
       this.description = "null",
       this.isbn = "null",
-      this.pageCount = "null",
+      this.pageCount = -1,
       this.releaseDate = "null",
       this.star = 0.0,
       this.totalUserVoted = 0,
@@ -35,14 +35,15 @@ class Book {
   static Book fromJson(Map<String, dynamic> json) {
     return Book(
       id: json['id'],
-      publisherId: json['publisher_id'],
-      languageId: json['language_id'],
+      authorId: json["authorId"],
+      publisherId: json['publisherId'],
+      languageId: json['languageId'],
       name: json['name'],
       description: json['description'],
       isbn: json['isbn'],
       imageLink: json['imageLink'],
-      pageCount: json['pageCount'],
       releaseDate: json['releaseDate'],
+      pageCount: json['pageCount'],
     );
   }
 }

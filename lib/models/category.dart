@@ -8,7 +8,7 @@ class Category {
     return Category(
       id: json['id'],
       name: json['name'],
-      imageLink: null,
+      imageLink: json["imageLink"],
     );
   }
 }

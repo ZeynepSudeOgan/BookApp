@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math';
 
 import 'package:db_project/models/author.dart';
@@ -10,7 +11,7 @@ import 'package:db_project/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class DataManager {
-  static String baseUrl = "http://192.168.1.12:3001";
+  static String baseUrl = "http://10.0.2.2:8080";
 
   @Deprecated("Dont need to this method")
   static Future<List<Book>> getAllBooks() async {
@@ -47,30 +48,33 @@ class DataManager {
   }
 
   static Future<Book?> getBookDetails(int bookId) async {
-    /*
-    String url = "$baseUrl/book/$bookId";
+    String url = "$baseUrl/books/$bookId";
     Uri uri = Uri.parse(url);
     var response = await http.get(uri);
     var json = jsonDecode(response.body);
     if (json == null) return null;
     var book = Book.fromJson(json);
     return book;
-    */
-    var all = await DataManager.getAllBooks();
-    return all.where((element) => element.id == bookId).toList().first;
+
+    /*var all = await DataManager.getAllBooks();
+    return all.where((element) => element.id == bookId).toList().first;*/
   }
 
   static Future<Author?> getAuthorById(int? authorId) async {
-    /*
-    var response = await http.get(Uri.parse("$baseUrl/author/$authorId"));
+    var response = await http.get(Uri.parse("$baseUrl/authors/$authorId"));
     var json = jsonDecode(response.body);
     if (json == null) return null;
     return Author.fromJson(json);
-    */
-    return Author(id: authorId);
+
+    //return Author(id: authorId);
   }
 
   static Future<List<Author>> getAuthors() async {
+    var response = await http.get(Uri.parse("$baseUrl/authors"));
+    List<dynamic> json = jsonDecode(response.body);
+    var test = json.map((e) => Author.fromJson(e)).toList();
+    return test;
+    /*
     return [
       Author(
           id: 1,
@@ -99,11 +103,11 @@ class DataManager {
           biography:
               "Hayata gözlerini açtı, sonra kapattı. Arada bir şeyler yedi."),
     ];
+    */
   }
 
   static Future<List<BookSimple>> getAllBooksSimply() async {
-    /*
-    var response = await http.get(Uri.parse("$baseUrl/bookSimply"));
+    var response = await http.get(Uri.parse("$baseUrl/books"));
     List<dynamic> json = jsonDecode(response.body);
 
     var test = json.map((e) {
@@ -111,8 +115,8 @@ class DataManager {
       return BookSimple.fromJson(e);
     }).toList();
     return test;
-    */
 
+    /*
     return [
       BookSimple(
           id: 1,
@@ -142,16 +146,16 @@ class DataManager {
           name: "Test6",
           imageLink:
               "https://www.indyturk.com/sites/default/files/styles/1368x911/public/article/main_image/2021/08/06/725336-391754488.jpg?itok=i_XFGYKK"),
-    ];
+    ];*/
   }
 
   static Future<List<Category>> getCategories() async {
-    /*
-    var response = await http.get(Uri.parse("$baseUrl/category"));
+    var response = await http.get(Uri.parse("$baseUrl/categories"));
     List<dynamic> json = jsonDecode(response.body);
     var test = json.map((e) => Category.fromJson(e)).toList();
     return test;
-    */
+
+    /*
     return [
       Category(
           id: 1,
@@ -223,51 +227,56 @@ class DataManager {
           name: "Philosophy",
           imageLink:
               "https://as1.ftcdn.net/v2/jpg/05/39/32/38/1000_F_539323873_442e0uaPcnBM6l4AOHj0gaaQ6SIPfKet.jpg"),
-    ];
+    ];*/
   }
 
   static Future<List<BookSimple>> getRecommandations() async {
-    /*
-    var response = await http.get(Uri.parse("$baseUrl/randomBooks"));
+    var response = await http.get(Uri.parse("$baseUrl/books/recommendations"));
     List<dynamic> json = jsonDecode(response.body);
     var test = json.map((e) => BookSimple.fromJson(e)).toList();
     return test;
-    */
+    /*
     var all = await getAllBooksSimply();
     return _getRandomElements<BookSimple>(all, all.length ~/ 2);
+    */
   }
 
   static Future<void> updateStar(BookStar star) async {
-    /*
     var body = jsonEncode({
-      "userID": star.userId,
-      "bookID": star.bookId,
+      "userId": star.userId,
+      "bookId": star.bookId,
       "star": star.star,
     });
-    var response = await http.post(
-      Uri.parse("$baseUrl/bookStar"),
-      body: body,
-      headers: {"Content-Type": "application/json"},
-    );
-    //TODO: Implement this method
-    */
-    return;
+    if (star.userId != null && star.bookId != null && star.star != null) {
+      var response = await http.post(
+        Uri.parse("$baseUrl/users/${star.userId}/star/${star.bookId}"),
+        body: body,
+        headers: {"Content-Type": "application/json"},
+      );
+      inspect(body);
+      inspect(response);
+    }
   }
 
-  static Future<BookStar> getAvgStar(int? bookId) async {
-    /*
-    var response = await http.get(Uri.parse("$baseUrl/avgStar/$bookId"));
+  static Future<double> getAvgStar(int? bookId) async {
+    var response = await http.get(Uri.parse("$baseUrl/books/$bookId/star"));
     var json = jsonDecode(response.body);
-    if (json == null) return BookStar(userId: -1, bookId: -1, star: 0);
-    return BookStar.fromJson(json);
-    */
-    return BookStar(bookId: bookId, star: 1);
+    inspect(json);
+    return json;
+    //return BookStar(bookId: bookId, star: 1);
   }
 
   static Future<BookStar> getBookStar(int? userId, int? bookId) async {
-    //TODO: Implement this method
-    Random random = Random();
-    return BookStar(userId: userId, bookId: bookId, star: random.nextInt(5));
+    if (userId != null && bookId != null) {
+      var uri = Uri.tryParse("$baseUrl/books/$bookId/star");
+      if (uri != null) {
+        var response = await http.get(uri);
+        print("user gave ${response.body}");
+        return BookStar(
+            userId: userId, bookId: bookId, star: int.tryParse(response.body));
+      }
+    }
+    return BookStar();
   }
 
   @Deprecated("Dont need to this method")
@@ -288,72 +297,122 @@ class DataManager {
   }
 
   static Future<List<BookSimple>> getBooksByCategory(Category category) async {
-    /* var response =
-        await http.get(Uri.parse("$baseUrl/bookByCategory/${category.id}"));
+    var response =
+        await http.get(Uri.parse("$baseUrl/books/category/${category.id}"));
     List<dynamic> json = jsonDecode(response.body);
     var test = json.map((e) => BookSimple.fromJson(e)).toList();
     return test;
-    */
+
+    /*
     var books = await getAllBooksSimply();
-    return [books[0], books[2], books[5]];
+    return [books[0], books[2], books[5]]; */
   }
 
   static Future<List<BookSimple>> getBookSimplesByAuthorId(
       int? authorId) async {
-    /* var response = await http.get(Uri.parse("$baseUrl/bookByAuthor/$authorId"));
+    var response = await http.get(Uri.parse("$baseUrl/books/author/$authorId"));
     List<dynamic> json = jsonDecode(response.body);
     var test = json.map((e) => BookSimple.fromJson(e)).toList();
     return test;
-   */
-    return await getAllBooksSimply();
+
+    //return await getAllBooksSimply();
   }
 
   static User testUser =
       User(id: 1, username: "testUser", password: "testUserPass");
   static Future<User?> login(String username, String password) async {
-    /* var body = jsonEncode({
-      "userName": username,
+    var body = jsonEncode({
+      "username": username,
       "password": password,
     });
-    var response = await http.post(
-      Uri.parse("$baseUrl/user/login"),
-      body: body,
-      headers: {"Content-Type": "application/json"},
-    );
-    var json = jsonDecode(response.body);
-    print(json);
-    if (json == null) return null;
-    return User.fromJson(json);*/
-    return testUser;
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/login'),
+        body: body,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Başarılı kayıt durumları
+        final Map<String, dynamic>? json = jsonDecode(response.body);
+        if (json != null) {
+          return User.fromJson(json);
+        } else {
+          // Beklenmeyen veri formatı hatası
+          print(response.body);
+
+          return null;
+        }
+      } else {
+        // Geçersiz istek hatası
+        print(response.body);
+        return null;
+      }
+    } catch (error) {
+      // Ağ hatası veya JSON ayrıştırma hatası
+      print('Hata: $error');
+      return null;
+    }
+    // return testUser;
   }
 
-  @Deprecated("Dont need to this method")
-  static Future<User> getUser(String id) async {
-    var response = await http.get(Uri.parse("$baseUrl/user/$id"));
-    var json = jsonDecode(response.body);
+  static Future<User?> updateUser(User updated) async {
+    try {
+      final uri = Uri.tryParse('$baseUrl/users/${updated.id}');
+      if (uri == null) {
+        throw Exception('Geçersiz URI');
+      }
 
-    return testUser;
+      final response = await http.put(
+        uri,
+        body: jsonEncode(updated.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Başarılı güncelleme durumu
+        final Map<String, dynamic> json = jsonDecode(response.body);
+        return User.fromJson(json);
+      } else {
+        // Diğer hata durumları
+        throw Exception(
+            'Güncelleme sırasında bir hata oluştu. (Hata kodu: ${response.body})');
+      }
+    } catch (error) {
+      // Ağ hatası, JSON ayrıştırma hatası veya beklenmeyen hata
+      print('Hata: $error');
+      return null; // Hata durumunda null döndür
+    }
   }
 
-  static Future<void> updateUser(User updated) async {
-    //TODO: Implement this method
-  }
+  static Future<User?> register(Map<String, dynamic> userJson) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/register'),
+        body: jsonEncode(userJson),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-  static Future<User?> register(User newUser) async {
-    /*
-    var body = jsonEncode({
-      "userName": newUser.username,
-      "password": newUser.password,
-    });
-    var response = await http.post(
-      Uri.parse("$baseUrl/user/register"),
-      body: body,
-      headers: {"Content-Type": "application/json"},
-    );
-    var json = jsonDecode(response.body);
-    if (json == null) return null;
-    return User.fromJson(json);
-    */
-    return testUser;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Başarılı kayıt durumları
+        final Map<String, dynamic>? json = jsonDecode(response.body);
+        if (json != null) {
+          return User.fromJson(json);
+        } else {
+          // Beklenmeyen veri formatı hatası
+          print(response.body);
+
+          return null;
+        }
+      } else {
+        // Geçersiz istek hatası
+        print(response.body);
+        return null;
+      }
+    } catch (error) {
+      // Ağ hatası veya JSON ayrıştırma hatası
+      print('Hata: $error');
+      return null;
+    }
   }
 }

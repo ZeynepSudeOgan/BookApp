@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:db_project/models/user.dart';
 import 'package:db_project/pages/splash_screen.dart';
 import 'package:db_project/utils/data_manager.dart';
@@ -81,7 +83,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: ElevatedButton(
-                            onPressed: () async => await register(context),
+                            onPressed: () async {
+                              await register(context);
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black87,
                               shape: RoundedRectangleBorder(
@@ -110,13 +114,15 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> register(BuildContext context) async {
-    User newUser = User(
-      name: nameController.text,
-      username: usernameController.text,
-      password: passwordController.text,
-    );
-    var response = await DataManager.register(newUser);
+    Map<String, dynamic> json = {
+      "name": nameController.text,
+      "username": usernameController.text,
+      "password": passwordController.text
+    };
+
+    var response = await DataManager.register(json);
     if (response != null) {
+      inspect(response);
       Provider.of<UserProvider>(context, listen: false).setUser(response);
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SplashScreen(),

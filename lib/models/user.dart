@@ -18,9 +18,21 @@ class User {
     return User(
       id: json['id'],
       name: json['name'],
-      surname: json['lastName'],
-      username: json['userName'],
+      surname: json['lastname'],
+      username: json['username'],
       imageLink: json['imageLink'],
+      password: json["password"],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'lastname': surname,
+      'username': username,
+      'password': password, // Include password if it exists
+      'imageLink': imageLink,
+    };
   }
 }

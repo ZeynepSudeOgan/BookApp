@@ -115,8 +115,10 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
   Future<void> onSaveClicked() async {
     if (user != null) {
-      userProvider!.setUser(user!);
-      await DataManager.updateUser(userProvider!.user!);
+      var response = await DataManager.updateUser(userProvider!.user!);
+      if (response != null) {
+        userProvider!.setUser(user!);
+      }
     }
   }
 }
